@@ -96,6 +96,7 @@ void sum(float m1[], int8_t r1, int8_t c1, float m2[], int8_t r2, int8_t c2)
 void multi(float m1[], int8_t r1, int8_t c1, float m2[], int8_t r2, int8_t c2)
 {
     /* Check the condition of two matrices multiplication */
+    int8_t checkMulti = 0;
     if(((r1 == c1) && (r1 == 1)) || ((r2 == c2) && (r2 == 1)))
     {
         printf("Can't mutiplication two matrices!");
@@ -104,44 +105,46 @@ void multi(float m1[], int8_t r1, int8_t c1, float m2[], int8_t r2, int8_t c2)
     {
         printf("A x B:\n");
         task(m1, r1, c1, m2, r2, c2);
+        checkMulti = 1;
     }
     if(r1 == c2)
     {
         printf("B x A:\n");
         task(m2, r2, c2, m1, r1, c1);
+        checkMulti = 1;
     }
-    else
+    if(checkMulti == 0)
     {
         printf("Can't mutiplication two matrices!");
     }
 }
 void task(float m1[], int8_t r1, int8_t c1, float m2[], int8_t r2, int8_t c2)
 {
-    float tempm[MAX];
-        int8_t sum;
-        /* multiplication two matrices */
-        int8_t i;
-        for(i = 0; i < r1; i++)
+    float tempm[2 * MAX - 2];
+    int8_t sum;
+    /* multiplication two matrices */
+    int8_t i;
+    for(i = 0; i < r1; i++)
+    {
+        int8_t j;
+        for(j = 0; j < c2; j++)
         {
-            int8_t j;
-            for(j = 0; j < c2; j++)
+            sum = 0;
+            int8_t k;
+            for(k = 0; k < r2; k++)
             {
-                sum = 0;
-                int8_t k;
-                for(k = 0; k < r2; k++)
-                {
-                    sum += m1[i * c1 + k] * m2[k * c2 + j];
-                    tempm[i * c2 + j] = sum;
-                }
-            }
+                sum += m1[i * c1 + k] * m2[k * c2 + j];
+                 tempm[i * c2 + j] = sum;
+             }
         }
-        /* Result */
-        for(i = 0; i < r1 * c2; i++)
+    }
+    /* Result */
+    for(i = 0; i < r1 * c2; i++)
+    {
+        printf("%.2f ", tempm[i]);
+        if((i + 1 ) % c2 == 0)
         {
-            printf("%.2f ", tempm[i]);
-            if((i + 1 ) % c2 == 0)
-            {
-                printf("\n");
-            }
+            printf("\n");
         }
+    }
 }
